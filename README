@@ -1,0 +1,10 @@
+GETTING STARTED:
+------------------------------------
+MySQL commands
+------------------------------------
+$ mysql -u root -p
+mysql> create database bootstrapdb;
+mysql> create database fluorite_dev;
+mysql> grant all on bootstrapdb.* to admin@localhost identified by 'p@ssw0rd';
+mysql> grant all on fluorite_dev.* to admin@localhost identified by 'p@ssw0rd';
+mysql> exit
