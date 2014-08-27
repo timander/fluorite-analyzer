@@ -16,11 +16,15 @@ public class DataImporter {
   @Autowired
   private ActivityRepository activityRepository;
 
+  @Autowired
+  private SessionGrouper sessionGrouper;
+
   public void importCsvFile(File file) {
     try {
       List<String> lines = FileUtils.readLines(file);
       List<Activity> activities = convertLinesToActivities(lines);
-      activityRepository.save(activities);
+      List<Activity> groupedActivities = sessionGrouper.assignGroups(activities);
+      activityRepository.save(groupedActivities);
       System.out.println("Imported: " + activities.size());
     } catch (Exception e) {
       throw new RuntimeException(e);
@@ -49,10 +53,6 @@ public class DataImporter {
     Long millisecond = Long.valueOf(parts[3]);
     String event = parts[4];
     return new Activity(user, logfile, millisecond, event);
-  }
-
-  public void setActivityRepository(ActivityRepository activityRepository) {
-    this.activityRepository = activityRepository;
   }
 
 }

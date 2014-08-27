@@ -22,6 +22,9 @@ public class DataImporterTest {
   ActivityRepository repository;
 
   @Autowired
+  DataImporter dataImporter;
+
+  @Autowired
   JdbcTemplate jdbcTemplate;
 
   @Before
@@ -29,11 +32,8 @@ public class DataImporterTest {
     jdbcTemplate.execute("delete from Activity");
   }
 
-
   @Test
   public void importCsvFile() {
-    DataImporter dataImporter = new DataImporter();
-    dataImporter.setActivityRepository(repository);
     URL resource = getClass().getClassLoader().getResource("small-log.csv");
     dataImporter.importCsvFile(new File(resource.getFile()));
     assertEquals(10, repository.findAll().size());

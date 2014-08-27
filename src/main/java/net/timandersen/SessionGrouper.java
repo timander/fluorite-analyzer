@@ -1,11 +1,13 @@
 package net.timandersen;
 
 import net.timandersen.model.Activity;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+@Component
 public class SessionGrouper {
 
   public static final long FIVE_MINUTES = 5 * 60 * 1000L;
