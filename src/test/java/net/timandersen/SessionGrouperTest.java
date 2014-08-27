@@ -28,6 +28,19 @@ public class SessionGrouperTest {
     assertEquals(new Long(2), modifiedActivities.get(2).getSession());
   }
 
+
+  @Test
+  public void activitiesByDifferentUsersHaveDifferentSessions() {
+    SessionGrouper grouper = new SessionGrouper();
+    List<Activity> activities = Arrays.asList(
+      new Activity("user1", "file1.xml", NOW, "event1"),
+      new Activity("user2", "file1.xml", NOW, "event2"),
+      makeActivityWithTimestamp(NOW + HOUR, "event3"));
+    List<Activity> modifiedActivities = grouper.assignGroups(activities);
+    assertEquals(new Long(1), modifiedActivities.get(0).getSession());
+    assertEquals(new Long(2), modifiedActivities.get(1).getSession());
+  }
+
   private Activity makeActivityWithTimestamp(long millisecond, String event) {
     return new Activity("user1", "file1.xml", millisecond, event);
   }

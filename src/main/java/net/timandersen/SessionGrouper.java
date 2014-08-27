@@ -17,13 +17,15 @@ public class SessionGrouper {
     List<Activity> modifiedActivities = new ArrayList<Activity>();
     Long previousMillisecond = 0L;
     Long currentSessionGroupId = 0L;
+    String previousUser = "";
     for (Activity activity : activities) {
-      if (overFiveMinutes(previousMillisecond, activity.getMillisecond())) {
+      if (!previousUser.equals(activity.getUser()) || overFiveMinutes(previousMillisecond, activity.getMillisecond())) {
         currentSessionGroupId++;
       }
       activity.setSession(currentSessionGroupId);
       modifiedActivities.add(activity);
       previousMillisecond = activity.getMillisecond();
+      previousUser = activity.getUser();
     }
     return modifiedActivities;
   }
