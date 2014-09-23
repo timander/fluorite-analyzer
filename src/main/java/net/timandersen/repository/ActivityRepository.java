@@ -1,6 +1,7 @@
 package net.timandersen.repository;
 
 import net.timandersen.model.Activity;
+import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -32,4 +33,9 @@ public class ActivityRepository {
     return sessionFactory.getCurrentSession().createQuery("from Activity").list();
   }
 
+  public List<Activity> findActivitiesForUser(String user) {
+    Query query = sessionFactory.getCurrentSession().createQuery("from Activity where user = :user order by millisecond");
+    query.setString("user", user);
+    return query.list();
+  }
 }

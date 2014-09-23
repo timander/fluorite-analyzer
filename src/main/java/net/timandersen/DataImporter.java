@@ -23,9 +23,12 @@ public class DataImporter {
     try {
       List<String> lines = FileUtils.readLines(file);
       List<Activity> activities = convertLinesToActivities(lines);
-      List<Activity> groupedActivities = sessionGrouper.assignGroups(activities);
-      activityRepository.save(groupedActivities);
+      activityRepository.save(activities);
+
       System.out.println("Imported: " + activities.size());
+
+      sessionGrouper.assignGroups();
+
     } catch (Exception e) {
       throw new RuntimeException(e);
     }

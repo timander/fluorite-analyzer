@@ -34,7 +34,7 @@ public class DataImporterTest {
 
   @Test
   public void importCsvFile() {
-    URL resource = getClass().getClassLoader().getResource("small-log.csv");
+    URL resource = getClass().getClassLoader().getResource("aggregate-log.csv");
     dataImporter.importCsvFile(new File(resource.getFile()));
     assertEquals(10, repository.findAll().size());
   }
