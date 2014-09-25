@@ -19,8 +19,7 @@ public class ActivityRepository {
   private SessionFactory sessionFactory;
 
   public void save(Activity activity) {
-    sessionFactory.getCurrentSession().save(activity);
-
+    sessionFactory.getCurrentSession().saveOrUpdate(activity);
   }
 
   public void save(List<Activity> activities) {

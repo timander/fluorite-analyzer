@@ -33,7 +33,6 @@ public class SessionGrouper {
       for (Activity activity : activitiesForUser) {
         if (previousActivity == null) previousActivity = activity;
         long durationBetweenEvents = activity.getMillisecond() - previousActivity.getMillisecond();
-        System.out.println("durationBetweenEvents = " + durationBetweenEvents);
         if (durationBetweenEvents > FIFTEEN_MINUTES) {
           sessionNumber++;
         }
@@ -51,29 +50,6 @@ public class SessionGrouper {
       users.add((String) row.get("user"));
     }
     return users;
-  }
-
-
-  public List<Activity> assignGroups(List<Activity> activities) {
-    Collections.sort(activities, new ActivityComparator());
-    List<Activity> modifiedActivities = new ArrayList<Activity>();
-    Long previousMillisecond = 0L;
-    Long currentSessionGroupId = 0L;
-    String previousUser = "";
-    for (Activity activity : activities) {
-      if (!previousUser.equals(activity.getUser()) || overFiveMinutes(previousMillisecond, activity.getMillisecond())) {
-        currentSessionGroupId++;
-      }
-      activity.setSession(currentSessionGroupId);
-      modifiedActivities.add(activity);
-      previousMillisecond = activity.getMillisecond();
-      previousUser = activity.getUser();
-    }
-    return modifiedActivities;
-  }
-
-  private boolean overFiveMinutes(Long t1, long t2) {
-    return Math.abs(t1 - t2) > FIFTEEN_MINUTES;
   }
 
 }

@@ -10,7 +10,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration("classpath:contexts/application.xml")
 public class SessionGrouperIntegrationTest {
 
-
   @Autowired
   SessionGrouper sessionGrouper;
 

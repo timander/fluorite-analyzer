@@ -1,6 +1,7 @@
 package net.timandersen.model;
 
 import javax.persistence.*;
+import java.sql.Date;
 
 @Entity
 @Table(name = "activity")
@@ -21,6 +22,9 @@ public class Activity {
   private Long millisecond;
 
   @Column
+  private Date activityDate;
+
+  @Column
   private String event;
 
   @Column
@@ -34,6 +38,7 @@ public class Activity {
     this.logfile = logfile;
     this.millisecond = millisecond;
     this.event = event;
+    this.activityDate = new Date(millisecond);
   }
 
   public long getId() {
@@ -64,6 +69,10 @@ public class Activity {
     this.session = session;
   }
 
+  public Date getActivityDate() {
+    return activityDate;
+  }
+
   @Override
   public String toString() {
     return "Activity{" +
@@ -71,9 +80,9 @@ public class Activity {
       ", user='" + user + '\'' +
       ", logfile='" + logfile + '\'' +
       ", millisecond=" + millisecond +
+      ", activityDate=" + activityDate +
       ", event='" + event + '\'' +
       ", session=" + session +
       '}';
   }
-
 }
