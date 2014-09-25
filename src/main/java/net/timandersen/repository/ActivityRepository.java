@@ -8,7 +8,10 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 @Transactional
@@ -36,5 +39,9 @@ public class ActivityRepository {
     Query query = sessionFactory.getCurrentSession().createQuery("from Activity where user = :user order by millisecond");
     query.setString("user", user);
     return query.list();
+  }
+
+  public List<String> findDistinctUsers() {
+      return sessionFactory.getCurrentSession().createQuery("select distinct user from Activity").list();
   }
 }
