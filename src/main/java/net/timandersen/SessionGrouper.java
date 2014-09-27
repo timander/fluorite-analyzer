@@ -51,20 +51,18 @@ public class SessionGrouper {
   public List<CodeSession> getCodeSessionsForUser(String user) {
     List<Activity> activitiesForUser = activityRepository.findActivitiesForUser(user);
     List<CodeSession> codeSessions = new ArrayList<CodeSession>();
-    CodeSession currentCodeSession = CodeSession.getDefault();
+    ActivityDurationGroup currentActivityDurationGroup = ActivityDurationGroup.getDefault();
     Activity previousActivity = null;
     for (Activity activity : activitiesForUser) {
-      if (!currentCodeSession.isStarted()) currentCodeSession.start(activity);
-      if (!currentCodeSession.isCurrentSession(previousActivity, activity)) {
-        currentCodeSession.stop(previousActivity);
-        codeSessions.add(currentCodeSession);
-        currentCodeSession = CodeSession.getDefault();
-        currentCodeSession.start(activity);
+      if (!currentActivityDurationGroup.isStarted()) currentActivityDurationGroup.start(activity);
+      if (!currentActivityDurationGroup.isCurrentSession(previousActivity, activity)) {
+        codeSessions.add(currentActivityDurationGroup.stop(previousActivity));
+        currentActivityDurationGroup = ActivityDurationGroup.getDefault();
+        currentActivityDurationGroup.start(activity);
       }
       previousActivity = activity;
     }
-    currentCodeSession.stop(previousActivity);
-    codeSessions.add(currentCodeSession);
+    codeSessions.add(currentActivityDurationGroup.stop(previousActivity));
     return codeSessions;
   }
 

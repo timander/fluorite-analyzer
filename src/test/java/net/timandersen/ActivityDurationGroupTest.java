@@ -9,14 +9,14 @@ import org.junit.Test;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
-public class CodeSessionTest {
+public class ActivityDurationGroupTest {
 
   private DateTime now = DateTime.now();
-  private CodeSession tenMinuteSession;
+  private ActivityDurationGroup tenMinuteSession;
 
   @Before
   public void setUp() throws Exception {
-    tenMinuteSession = new CodeSession(Duration.standardMinutes(10));
+    tenMinuteSession = new ActivityDurationGroup(Duration.standardMinutes(10));
   }
 
   @Test
