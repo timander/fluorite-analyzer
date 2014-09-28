@@ -1,51 +1,36 @@
 package net.timandersen;
 
-import net.timandersen.model.Activity;
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
 
 public class CodeSession {
-  private boolean isStarted = false;
-  private DateTime startTime = null;
-  private final Duration sessionDuration;
-  private DateTime endTime;
+  private final DateTime startTime;
+  private final DateTime endTime;
+  private final Duration duration;
 
-  public CodeSession(Duration sessionDuration) {
-    this.sessionDuration = sessionDuration;
+  public CodeSession(DateTime start, DateTime end){
+    this(start, end, new Duration(start, end));
   }
 
-  public Duration getDuration() {
-    return new Duration(startTime, endTime);
+  public CodeSession(DateTime start, DateTime end, Duration duration) {
+    this.startTime = start;
+    this.endTime = end;
+    this.duration = duration;
   }
 
-  public boolean isCurrentSession(Activity previous, Activity current) {
-    DateTime previousStartTime;
-    if (previous == null) previousStartTime = startTime;
-    else previousStartTime = new DateTime(previous.getMillisecond());
-
-    DateTime endDate = previousStartTime.plus(sessionDuration);
-    return endDate.isAfter(current.getMillisecond());
+  public static CodeSession combine(CodeSession daily, CodeSession codeSession) {
+    return new CodeSession(daily.getStartTime(), codeSession.getEndTime(), daily.getDuration().plus(codeSession.getDuration()));
   }
 
-  public void start(Activity activity) {
-    this.startTime = new DateTime(activity.getMillisecond());
-    this.isStarted = true;
-  }
-
-  public boolean isStarted() {
-    return isStarted;
-  }
-
-  public void stop(Activity activity) {
-    this.endTime = new DateTime(activity.getMillisecond());
-    this.isStarted = false;
-  }
-
-  public DateTime getStartDate() {
+  public DateTime getStartTime() {
     return startTime;
   }
 
-  public static CodeSession getDefault() {
-    return new CodeSession(Duration.standardMinutes(10));
+  public DateTime getEndTime() {
+    return endTime;
+  }
+
+  public Duration getDuration() {
+    return duration;
   }
 }

@@ -11,7 +11,6 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -33,7 +32,7 @@ public class SessionGrouperTest {
   Activity one = new Activity("tim", "", now.getMillis(), "session1");
   Activity two = new Activity("tim", "", now.plusMinutes(5).getMillis(), "session1");
   Activity three = new Activity("tim", "", now.plusMinutes(11).getMillis(), "session1");
-  Activity tenMinutesAfterThree = new Activity("tim", "", now.plusMinutes(11+10).getMillis(), "session2");
+  Activity tenMinutesAfterThree = new Activity("tim", "", now.plusMinutes(11 + 10).getMillis(), "session2");
 
   Activity brandon = new Activity("brandon", "", now.plusMinutes(11).getMillis(), "session2");
 

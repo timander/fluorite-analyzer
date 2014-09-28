@@ -1,10 +1,5 @@
 package net.timandersen;
 
-import org.joda.time.DateTime;
-import org.joda.time.Duration;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
-import org.joda.time.format.PeriodFormat;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +7,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.io.File;
+import java.net.URL;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -42,30 +38,25 @@ public class SessionGrouperIntegrationTest {
 //    dataImporter.importCsvFile(new File(resource.getFile()));
 
     Map<String, List<CodeSession>> userCodeSessions = sessionGrouper.getUserCodeSessions();
-    for (String user : userCodeSessions.keySet()) {
-      System.out.println(user);
-      System.out.println(getDivider());
-      Duration totalDuration = Duration.ZERO;
-      for (CodeSession codeSession : userCodeSessions.get(user)) {
-        totalDuration = totalDuration.plus(codeSession.getDuration());
-        System.out.println("\t" + formatDate(codeSession.getStartDate()) + "\t" + formatDuration(codeSession.getDuration()));
-      }
-      System.out.println("Duration: " + formatDuration(totalDuration));
-      System.out.println();
+
+    CodeSessionReport report = new CodeSessionReport();
+    List<String> reportLines = report.formatCodeSessionPerUser(userCodeSessions);
+
+    for (String reportLine : reportLines) {
+      System.out.println(reportLine);
     }
   }
 
-  public String formatDuration(Duration value) {
-    return PeriodFormat.getDefault().print(value.toPeriod());
+  @Test
+  public void printDailySessions(){
+    Map<String, List<CodeSession>> userCodeSessions = sessionGrouper.getUserCodeSessions();
+
+    CodeSessionReport report = new CodeSessionReport();
+    List<String> reportLines = report.formatDailyDurationPerUser(userCodeSessions);
+
+    for (String reportLine : reportLines) {
+      System.out.println(reportLine);
+    }
   }
 
-  public String formatDate(DateTime value){
-    DateTimeFormatter formatter = DateTimeFormat.forPattern("dd-MMM-yy kk:mm")
-            .withLocale(Locale.US);
-    return formatter.print(value);
-  }
-
-  public String getDivider() {
-    return new String(new char[20]).replace("\0", "=");
-  }
 }
